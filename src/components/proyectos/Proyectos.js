@@ -1,7 +1,7 @@
 import React from 'react'
 import Barra from '../layout/Barra'
 import Sidebar from '../layout/Sidebar'
-import FormTarea from '../tareas/FromTarea'
+import FormTarea from '../tareas/FormTarea'
 import ListadoTarea from '../tareas/ListadoTareas'
 
 const Proyectos = () => {

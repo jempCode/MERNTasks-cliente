@@ -1,12 +1,13 @@
 import React, { useReducer } from 'react';
-import { ACTUALIZAR_TAREA, AGREGAR_TAREA, ELIMINAR_TAREA, ESTADO_TAREA, TAREAS_PROYECTO, TAREA_ACTUAL, VALIDAR_TAREA } from '../../types';
+import { ACTUALIZAR_TAREA, AGREGAR_TAREA, ELIMINAR_TAREA, ESTADO_TAREA, LIMPIAR_TAREA, TAREAS_PROYECTO, TAREA_ACTUAL, VALIDAR_TAREA } from '../../types';
 import TareaReducer from './tareaReducer';
 import TareaContext from './tareasContext';
+import * as uuid from 'uuid';
 
 const TareaState = props => {
     const initialState= {
         tareas:[
-            { id: 0,nombre:' Elegir plataforma', estado: true, proyectoId: 1},
+            { id: 1,nombre:' Elegir plataforma', estado: true, proyectoId: 1},
             { id: 2,nombre:' Elegir colores', estado: false, proyectoId: 2},
             { id: 3,nombre:' Elegir plataforma de pago', estado: false, proyectoId: 3},
             { id: 4,nombre:' Elegir hosting', estado: true, proyectoId: 4},
@@ -39,6 +40,7 @@ const TareaState = props => {
     }
 
     const agregarTarea = tarea => {
+        tarea.id = uuid.v4()
         dispatch({
             type: AGREGAR_TAREA,
             payload: tarea
@@ -80,6 +82,12 @@ const TareaState = props => {
         });
     }
 
+    const limpiarTarea = () => {
+        dispatch({
+            type: LIMPIAR_TAREA
+        })
+    }
+
     return (
         <TareaContext.Provider
             value={{
@@ -93,7 +101,8 @@ const TareaState = props => {
                 eliminarTarea,
                 cambiarEstadoTarea,
                 guardarTareaActual,
-                actualizarTarea
+                actualizarTarea,
+                limpiarTarea
             }}
         >
             {props.children}

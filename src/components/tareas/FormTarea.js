@@ -8,7 +8,7 @@ const FormTarea = () => {
     const { proyecto } = proyectosContext;
 
     const tareasContext = useContext(TareaContext);
-    const { agregarTarea, tareaseleccionada, errortarea, validarTarea, obtenerTareas, actualizarTarea } = tareasContext;
+    const { agregarTarea, tareaseleccionada, errortarea, validarTarea, obtenerTareas, actualizarTarea, limpiarTarea } = tareasContext;
 
     useEffect(() => {
         if(tareaseleccionada !== null) {
@@ -53,9 +53,12 @@ const FormTarea = () => {
             agregarTarea(tarea);
         } else {
             actualizarTarea(tarea);
+            // elimina tarea seleccionad del satate
+            limpiarTarea();
         }
-        
+
         obtenerTareas(proyectoActual.id); 
+        
         // reiniciar el form
         guardarTarea({
             nombre:''

@@ -48,8 +48,7 @@ const FormTarea = () => {
 
         if( tareaseleccionada === null) {
             // agregar la nueva tarea
-            tarea.proyectoId = proyectoActual.id
-            tarea.estado =  false;
+            tarea.proyecto = proyectoActual._id
             agregarTarea(tarea);
         } else {
             actualizarTarea(tarea);
@@ -57,7 +56,7 @@ const FormTarea = () => {
             limpiarTarea();
         }
 
-        obtenerTareas(proyectoActual.id); 
+        obtenerTareas(proyectoActual._id); 
         
         // reiniciar el form
         guardarTarea({

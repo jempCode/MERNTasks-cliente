@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import clienteAxios from "../../config/axios";
 import tokenAuth from "../../config/tokenAuth";
-import { LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO, REGISTRO_ERROR, REGISTRO_EXITOSO } from "../../types";
+import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO, REGISTRO_ERROR, REGISTRO_EXITOSO } from "../../types";
 import AuthContext from "./authContext";
 import AuthReducer from "./authReducer";
 
@@ -11,7 +11,8 @@ const AuthState = props => {
         token: localStorage.getItem('token'),
         autenticado: null,
         usuario: null,
-        mensaje: null
+        mensaje: null,
+        cargando: true
     };
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -20,7 +21,6 @@ const AuthState = props => {
     const registrarUsuario = async datos => {
         try {
             const respuestaUsuario = await clienteAxios.post('/api/usuarios', datos);
-            console.log(respuestaUsuario);
 
             dispatch({
                 type: REGISTRO_EXITOSO,
@@ -31,7 +31,7 @@ const AuthState = props => {
             usuarioAutenticado();
         } catch (error) {
             const alerta = {
-                msg: error. response.data.msg,
+                msg: error.response.data.msg,
                 categoria: 'alerta-error'
             };
             dispatch({
@@ -68,6 +68,7 @@ const AuthState = props => {
         try {
 
             const respuesta = await clienteAxios.post('/api/auth', datos);
+            console.log('login exitoso\n', respuesta);
 
             dispatch({
                 type: LOGIN_EXITOSO,
@@ -79,14 +80,21 @@ const AuthState = props => {
         } catch (error) {
             console.log(error.response.data);
             const alerta = {
-                msg: error. response.data.msg,
+                msg: error.response.data.msg,
                 categoria: 'alerta-error'
             };
             dispatch({
                 type: LOGIN_ERROR,
                 payload: alerta
             });
-        } 
+        }
+    }
+
+    // cierra la sesion del usaurio
+    const cerrarSesion = () => {
+        dispatch({
+             type: CERRAR_SESION
+        });
     }
 
     return(
@@ -96,8 +104,11 @@ const AuthState = props => {
                 autenticado: state.autenticado,
                 usuario: state.usuario,
                 mensaje: state.mensaje,
+                cargando: state.cargando,
                 registrarUsuario,
-                iniciarSesion
+                iniciarSesion,
+                usuarioAutenticado,
+                cerrarSesion
             }}
         >
             {props.children}
